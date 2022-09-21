@@ -1,6 +1,6 @@
 const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
-const resetbtn = document.querySelector('.btn__reset');
+const startBtn = document.querySelector('.btn__reset');
 const overlay = document.getElementById('overlay');
 const phrases = [
     'time is money',
@@ -32,11 +32,11 @@ function addPhraseToDisplay(arr){
 }
 
 function checkLetter (btn) {
-    const lis = document.getElementsByClassName('letter');
+    const letter = document.getElementsByClassName('letter');
     const buttonText = btn.textContent;
     let match = null;
-    for (let i = 0; i < lis.length; i++) {
-        let li = lis[i];
+    for (let i = 0; i < letter.length; i++) {
+        let li = letter[i];
         if (li.textContent === buttonText) {
             li.classList.add('show');
             match = buttonText;
@@ -54,6 +54,30 @@ function checkWin () {
         overlay.className = 'win';
         headline.textContent = 'Congratulations! You won!!';
         overlay.style.display = 'flex';
+        startBtn.remove();
+        const resetGame = document.createElement('button');
+        resetGame.textContent = 'Reset Game';
+        resetGame.className = 'reset_game';
+        overlay.appendChild(resetGame);
+
+        resetGame.addEventListener('click', () => {
+            const button = document.querySelectorAll('.keyrow button');  
+            const ul = document.querySelector('#phrase ul');
+            const lis = document.querySelectorAll('ul li');
+            for (let i = 0; i < button.length; i++) {
+                button[i].removeAttribute('class');
+                button[i].disabled = false;
+            };
+            for (let i = 0; i < lis.length; i++) {
+                lis[i].remove();
+            };
+            
+            overlay.style.display = 'none';             
+            addPhraseToDisplay(phraseArray);
+            missed = 0;
+        });
+
+
     } else if (missed > 4) {
         overlay.className = 'lose';
         headline.textContent = 'Sorry... You lost.';
@@ -61,7 +85,7 @@ function checkWin () {
     }
 }
 
-resetbtn.addEventListener('click', () => {
+startBtn.addEventListener('click', () => {
     overlay.style.display = 'none';
 });
 
