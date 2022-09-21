@@ -1,7 +1,7 @@
 const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const resetbtn = document.querySelector('.btn__reset');
-let missed = 0;
+const overlay = document.getElementById('overlay');
 const phrases = [
     'time is money',
     'knowledge is power',
@@ -9,11 +9,7 @@ const phrases = [
     'i think therefore i am',
     'practice makes perfect'
 ];
-const overlay = document.getElementById('overlay');
-
-resetbtn.addEventListener('click', () => {
-    overlay.style.display = 'none';
-});
+let missed = 0;
 
 function getRandomPhraseAsArray(arr){
     const randomNumber = Math.floor(Math.random() * arr.length);
@@ -35,9 +31,6 @@ function addPhraseToDisplay(arr){
     }
 }
 
-const phraseArray = getRandomPhraseAsArray(phrases);
-addPhraseToDisplay(phraseArray);
-
 function checkLetter (btn) {
     const lis = document.getElementsByClassName('letter');
     const buttonText = btn.textContent;
@@ -55,15 +48,25 @@ function checkLetter (btn) {
 function checkWin () {
     const letter = document.getElementsByClassName('letter');
     const show = document.getElementsByClassName('show');
-    console.log("letter is:", letter.length, "quote is", show.length);
+    const headline = document.querySelector('.title');
 
     if (letter.length === show.length) {
-        const headline = overlay.firstElementChild;
-        overlay.className('win');
+        overlay.className = 'win';
         headline.textContent = 'Congratulations! You won!!';
+        overlay.style.display = 'flex';
+    } else if (missed > 4) {
+        overlay.className = 'lose';
+        headline.textContent = 'Sorry... You lost.';
         overlay.style.display = 'flex';
     }
 }
+
+resetbtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+});
+
+const phraseArray = getRandomPhraseAsArray(phrases);
+addPhraseToDisplay(phraseArray);
 
 qwerty.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
@@ -74,10 +77,11 @@ qwerty.addEventListener('click', (e) => {
         }
         const letterFound = checkLetter(button);
         if (letterFound === null) {
-            const ol = document.querySelector('#scoreboard ol');
-            const lastItem = ol.lastElementChild;
-            lastItem.remove();    
             missed += 1;
+            let n = missed - 1;
+            const ol = document.querySelector('ol');            
+            const li = ol.children[n];
+            li.firstElementChild.setAttribute('src', 'images/lostHeart.png')
         }
     }
     checkWin();
