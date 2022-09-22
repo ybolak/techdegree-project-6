@@ -7,13 +7,15 @@ const phrases = [
     'knowledge is power',
     'fortune favors the bold',
     'i think therefore i am',
-    'practice makes perfect'
+    'practice makes perfect',
+    'genius is eternal patience',
+    'stay hungry stay foolish'
 ];
 let missed = 0;
 
 function getRandomPhraseAsArray(arr){
-    const randomNumber = Math.floor(Math.random() * arr.length);
-    const randomPhrase = arr[randomNumber];
+    let randomNumber = Math.floor(Math.random() * arr.length);
+    let randomPhrase = arr[randomNumber];
     return randomPhrase.split('');
 }
 
@@ -51,19 +53,21 @@ function checkWin () {
     const headline = document.querySelector('.title');
 
     if (letter.length === show.length) {
+        const resetGame = document.createElement('button');
         overlay.className = 'win';
         headline.textContent = 'Congratulations! You won!!';
         overlay.style.display = 'flex';
-        startBtn.remove();
-        const resetGame = document.createElement('button');
+        startBtn.remove();        
         resetGame.textContent = 'Reset Game';
         resetGame.className = 'reset_game';
         overlay.appendChild(resetGame);
+    
 
         resetGame.addEventListener('click', () => {
             const button = document.querySelectorAll('.keyrow button');  
             const ul = document.querySelector('#phrase ul');
             const lis = document.querySelectorAll('ul li');
+            const tries = document.querySelectorAll('.tries img');
             for (let i = 0; i < button.length; i++) {
                 button[i].removeAttribute('class');
                 button[i].disabled = false;
@@ -71,17 +75,55 @@ function checkWin () {
             for (let i = 0; i < lis.length; i++) {
                 lis[i].remove();
             };
+            for (let i = 0; i < tries.length; i++) {
+                tries[i].setAttribute('src', 'images/liveHeart.png')
+            };
             
-            overlay.style.display = 'none';             
+            phraseArray = getRandomPhraseAsArray(phrases);
             addPhraseToDisplay(phraseArray);
+            console.log(phraseArray);
+
+            overlay.style.display = 'none'; 
             missed = 0;
+            resetGame.remove();
         });
 
 
     } else if (missed > 4) {
+        const resetGame = document.createElement('button');
         overlay.className = 'lose';
         headline.textContent = 'Sorry... You lost.';
         overlay.style.display = 'flex';
+        startBtn.remove();        
+        resetGame.textContent = 'Reset Game';
+        resetGame.className = 'reset_game';
+        overlay.appendChild(resetGame);
+    
+
+        resetGame.addEventListener('click', () => {
+            const button = document.querySelectorAll('.keyrow button');  
+            const ul = document.querySelector('#phrase ul');
+            const lis = document.querySelectorAll('ul li');
+            const tries = document.querySelectorAll('.tries img');
+            for (let i = 0; i < button.length; i++) {
+                button[i].removeAttribute('class');
+                button[i].disabled = false;
+            };
+            for (let i = 0; i < lis.length; i++) {
+                lis[i].remove();
+            };
+            for (let i = 0; i < tries.length; i++) {
+                tries[i].setAttribute('src', 'images/liveHeart.png')
+            };
+            
+            phraseArray = getRandomPhraseAsArray(phrases);
+            addPhraseToDisplay(phraseArray);
+            console.log(phraseArray);
+
+            overlay.style.display = 'none'; 
+            missed = 0;
+            resetGame.remove();
+        });
     }
 }
 
@@ -89,8 +131,9 @@ startBtn.addEventListener('click', () => {
     overlay.style.display = 'none';
 });
 
-const phraseArray = getRandomPhraseAsArray(phrases);
+let phraseArray = getRandomPhraseAsArray(phrases);
 addPhraseToDisplay(phraseArray);
+console.log(phraseArray);
 
 qwerty.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
