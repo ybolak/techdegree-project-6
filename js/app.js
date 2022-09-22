@@ -2,6 +2,7 @@ const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const startBtn = document.querySelector('.btn__reset');
 const overlay = document.getElementById('overlay');
+const letter = document.getElementsByClassName('letter');
 const phrases = [
     'time is money',
     'knowledge is power',
@@ -22,7 +23,7 @@ function getRandomPhraseAsArray(arr){
 function addPhraseToDisplay(arr){
     for (let i = 0; i < arr.length; i++) {
         const items = document.createElement('li');
-        const ul = document.querySelector('#phrase ul');
+        const ul = document.querySelector('ul');
         items.textContent = arr[i];
         ul.appendChild(items);
         if (arr[i] !== ' ') {
@@ -33,8 +34,7 @@ function addPhraseToDisplay(arr){
     }
 }
 
-function checkLetter (btn) {
-    const letter = document.getElementsByClassName('letter');
+function checkLetter (btn) {    
     const buttonText = btn.textContent;
     let match = null;
     for (let i = 0; i < letter.length; i++) {
@@ -48,41 +48,35 @@ function checkLetter (btn) {
 }
 
 function checkWin () {
-    const letter = document.getElementsByClassName('letter');
     const show = document.getElementsByClassName('show');
-    const headline = document.querySelector('.title');
+    const headline = document.querySelector('.title');    
 
     if (letter.length === show.length) {
         const resetGame = document.createElement('button');
-        overlay.className = 'win';
-        headline.textContent = 'Congratulations! You won!!';
-        overlay.style.display = 'flex';
-        startBtn.remove();        
         resetGame.textContent = 'Reset Game';
         resetGame.className = 'reset_game';
         overlay.appendChild(resetGame);
-    
+        overlay.className = 'win';
+        headline.textContent = 'Congratulations! You won!!';
+        overlay.style.display = 'flex';
+        startBtn.remove(); 
 
         resetGame.addEventListener('click', () => {
-            const button = document.querySelectorAll('.keyrow button');  
-            const ul = document.querySelector('#phrase ul');
+            const button = document.querySelectorAll('.keyrow button');
             const lis = document.querySelectorAll('ul li');
             const tries = document.querySelectorAll('.tries img');
             for (let i = 0; i < button.length; i++) {
                 button[i].removeAttribute('class');
                 button[i].disabled = false;
-            };
+            }
             for (let i = 0; i < lis.length; i++) {
                 lis[i].remove();
-            };
+            }
             for (let i = 0; i < tries.length; i++) {
                 tries[i].setAttribute('src', 'images/liveHeart.png')
-            };
-            
+            }
             phraseArray = getRandomPhraseAsArray(phrases);
             addPhraseToDisplay(phraseArray);
-            console.log(phraseArray);
-
             overlay.style.display = 'none'; 
             missed = 0;
             resetGame.remove();
@@ -91,35 +85,30 @@ function checkWin () {
 
     } else if (missed > 4) {
         const resetGame = document.createElement('button');
-        overlay.className = 'lose';
-        headline.textContent = 'Sorry... You lost.';
-        overlay.style.display = 'flex';
-        startBtn.remove();        
         resetGame.textContent = 'Reset Game';
         resetGame.className = 'reset_game';
         overlay.appendChild(resetGame);
-    
+        overlay.className = 'lose';
+        headline.textContent = 'Sorry... You lost.';
+        overlay.style.display = 'flex';
+        startBtn.remove();
 
         resetGame.addEventListener('click', () => {
-            const button = document.querySelectorAll('.keyrow button');  
-            const ul = document.querySelector('#phrase ul');
+            const button = document.querySelectorAll('.keyrow button');
             const lis = document.querySelectorAll('ul li');
             const tries = document.querySelectorAll('.tries img');
             for (let i = 0; i < button.length; i++) {
                 button[i].removeAttribute('class');
                 button[i].disabled = false;
-            };
+            }
             for (let i = 0; i < lis.length; i++) {
                 lis[i].remove();
-            };
+            }
             for (let i = 0; i < tries.length; i++) {
                 tries[i].setAttribute('src', 'images/liveHeart.png')
-            };
-            
+            }
             phraseArray = getRandomPhraseAsArray(phrases);
             addPhraseToDisplay(phraseArray);
-            console.log(phraseArray);
-
             overlay.style.display = 'none'; 
             missed = 0;
             resetGame.remove();
@@ -133,7 +122,6 @@ startBtn.addEventListener('click', () => {
 
 let phraseArray = getRandomPhraseAsArray(phrases);
 addPhraseToDisplay(phraseArray);
-console.log(phraseArray);
 
 qwerty.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
