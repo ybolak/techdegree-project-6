@@ -23,7 +23,7 @@ function getRandomPhraseAsArray(arr){
 function addPhraseToDisplay(arr){
     for (let i = 0; i < arr.length; i++) {
         const items = document.createElement('li');
-        const ul = document.querySelector('ul');
+        const ul = document.querySelector('#phrase ul');
         items.textContent = arr[i];
         ul.appendChild(items);
         if (arr[i] !== ' ') {
